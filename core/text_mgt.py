@@ -30,7 +30,6 @@ class Text_Mgt(): # 文本管理
 
 if __name__ == '__main__': # 代码测试
     file_path = './tests/text/test.txt'
-
     #print(Text_Mgt.Encodeing_Detect(file_path))
-
     #print(Text_Mgt.List_Read_Text(file_path, '#'))
+    #print(Text_Mgt.Match_List(Text_Mgt.List_Read_Text(file_path),'#测试啊'))
