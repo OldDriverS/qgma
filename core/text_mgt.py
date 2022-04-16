@@ -4,7 +4,7 @@ import chardet  # 文件编码检测，需安装
 class Text_Mgt():  # 文本管理
     def Encodeing_Detect(file_path):  # 文本编码检测
         with open(file_path, 'rb') as file:
-            result = chardet.detect(file.read(104876))  # 最多读取1MB文件进行检测
+            result = chardet.detect(file.read(1048576))  # 最多读取1MB文件进行检测
             #print(result['confidence'])#
             if float(result['confidence']) >= 0.5:  # 如果置信度大于50%
                 return result['encoding'].lower()
