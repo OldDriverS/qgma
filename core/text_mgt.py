@@ -5,6 +5,8 @@
 # QGMA项目交流QQ群：332568832
 # 作者Bilibili：https://b23.tv/b39RG2r
 # Github：https://github.com/funnygeeker/qgma
+# 参考资料：
+# chardet文本编码检测：https://blog.csdn.net/tianzhu123/article/details/8187470
 
 import chardet  # 文件编码检测，需安装
 
@@ -22,17 +24,17 @@ class Text_Mgt():
                 return 'utf-8'  # 无法识别则默认为"utf-8"编码
 
     def List_Read_Text(file_path, exclude='', encoding=''):
-        '读取文本文件并以列表的形式输出，可选排除某字符开头的行 返回：list'
+        '读取文本文件并以列表的形式输出，可选排除某字符串开头的行 返回：list'
         if encoding == '':  # 如果没有文本编码参数，则自动识别编码
             encoding = Text_Mgt.Encodeing_Detect(file_path)
         with open(file_path, "r", encoding=encoding) as file:  # 读取文本文件
             all_text = file.readlines()
-            if exclude == '':  # 如果不需要排除某字符开头的文本行
+            if exclude == '':  # 如果不需要排除某字符串开头的文本行
                 text_list = [text.strip()
                              for text in all_text if text.strip("\n") != ""]
-            else:  # 如果需要排除某字符开头的文本行
+            else:  # 如果需要排除某字符串开头的文本行
                 text_list = [text.strip() for text in all_text if text.strip(
-                    "\n") != "" and text[0] != str(exclude)]
+                    "\n") != "" and text[0:len(exclude)] != str(exclude)]
             return text_list
 
     def Match_List(list, text):
