@@ -8,6 +8,7 @@
 # 参考资料：
 # chardet文本编码检测：https://blog.csdn.net/tianzhu123/article/details/8187470
 
+import os
 import chardet  # 文件编码检测，需安装
 
 
@@ -45,9 +46,21 @@ class Text_Mgt():
         else:
             return False
 
+    def Text_Exists(file_path, text_to_write='', encoding='utf-8'):
+        '检查文本文件是否存在，不存在则可创建并写入内容 返回：bool'
+        if os.path.isfile("./settings.txt") == True:  # 如果文件存在
+            return True
+        elif text_to_write != '':  # 如果要写入的内容不为空
+            with open(file_path, 'w', encoding=encoding) as file:
+                file.write(str(text_to_write))
+                return False
+        else:  # 文件既不存在也不需要写入内容
+            return False
+
 
 if __name__ == '__main__':  # 代码测试
     file_path = './tests/text/test.txt'
     # print(Text_Mgt.Encodeing_Detect(file_path))
     # print(Text_Mgt.List_Read_Text(file_path, '#'))
     # print(Text_Mgt.Match_List(Text_Mgt.List_Read_Text(file_path),'#测试啊'))
+    # Text_Mgt.Text_Exists('./temp.txt', 'hello')

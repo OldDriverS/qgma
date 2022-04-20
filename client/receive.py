@@ -41,23 +41,23 @@ class Receive:
         '【线程阻塞】接收的消息（没有进行过滤） 返回：json / None'
         Client, Address = Receive.ListenSocket.accept()
         # 长数据接收
-        total_Data = bytes()
-        cycle_Num = 0  # 循环计数，以防接收数据过长
+        total_data = bytes()
+        cycle_num = 0  # 循环计数，以防接收数据过长
 
         while True:
             # 将收到的数据拼接起来
-            rev_Data = Client.recv(1024)
-            total_Data += rev_Data  # 与当前接收到的数据合并
-            cycle_Num += 1  # 循环次数计数
-            if len(rev_Data) < 1024:  # 如果数据接收完成
-                Request = total_Data.decode(encoding='utf-8')  # 解码接收到的数据
+            rev_data = Client.recv(1024)
+            total_data += rev_data  # 与当前接收到的数据合并
+            cycle_num += 1  # 循环次数计数
+            if len(rev_data) < 1024:  # 如果数据接收完成
+                Request = total_data.decode(encoding='utf-8')  # 解码接收到的数据
                 rev_Json = Receive.Request_To_Json(Request)  # 将接收到的数据转化为json
                 Client.sendall((Receive.HttpResponseHeader).encode(
                     encoding='utf-8'))  # 返回接收成功状态码
                 Client.close()  # 断开连接
                 #print(rev_json)#
                 return rev_Json
-            elif cycle_Num >= 1024:
+            elif cycle_num >= 1024:
                 Client.close()  # 断开连接
                 return None  # 数据过长（大于1024kb）的返回内容
 
