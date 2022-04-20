@@ -24,6 +24,5 @@ class Conf_Mgt:
         return ConfigObj(file_path, encoding=encoding)
 
 
-''
 if __name__ == '__main__':
     print(Conf_Mgt.Conf_Read('./tests/text/settings.ini'))
