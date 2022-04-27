@@ -47,6 +47,7 @@ class Logger(logging.Logger):
     )
 
     def __init__(self):
+        # BUG file_bytes
         # 输出到控制台
         self.console_handler = logging.StreamHandler()
         # 输出到文件
@@ -58,14 +59,17 @@ class Logger(logging.Logger):
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         # 配置控制台和日志文件日志等级
-        self.console_handler.setLevel(eval('logging.%s' % (Logger.console_log_level).upper()))
-        self.file_handler.setLevel(eval('logging.%s' % (Logger.file_log_level).upper()))
+        self.console_handler.setLevel(Logger.console_log_level.upper())
+        self.file_handler.setLevel(Logger.file_log_level.upper())
         # 重复日志问题：
         # 1、防止多次addHandler；
         # 2、loggername 保证每次添加的时候不一样；
         # 3、显示完log之后调用removeHandler
-        self.logger.addHandler(self.console_handler)
-        self.logger.addHandler(self.file_handler)
+        if not self.logger.handlers:
+            self.logger.addHandler(self.console_handler)
+            self.logger.addHandler(self.file_handler)
+        self.console_handler.close()
+        self.file_handler.close()
 
     def Debug(self, msg):
         return self.logger.debug(msg)
@@ -94,14 +98,6 @@ class Logger(logging.Logger):
         else:
             logging.critical(traceback.format_exc())
             quit()
-        
-    def __call__(self):
-        # 重复日志问题：
-        # 1、防止多次addHandler；
-        # 2、loggername 保证每次添加的时候不一样；
-        # 3、显示完log之后调用removeHandler
-        self.logger.removeHandler(self.console_handler)
-        self.logger.removeHandler(self.file_handler)
 
 '''
 # 日志文件名处理 #
@@ -168,4 +164,9 @@ python中时间日期格式化符号：
         
 '''
 if __name__ == '__main__': # 代码测试
-    Logger.Debug('test')
+    Logger.file_max_bytes = 1024
+    print(Logger.file_max_bytes)
+    for i in range(999):
+        Logger().Debug('debug')
+        Logger().Info('info')
+        Logger().Warning('warn')
