@@ -166,7 +166,7 @@ python中时间日期格式化符号：
 if __name__ == '__main__': # 代码测试
     Logger.file_max_bytes = 1024
     print(Logger.file_max_bytes)
-    for i in range(999):
+    for i in range(99999):
         Logger().Debug('debug')
         Logger().Info('info')
         Logger().Warning('warn')
