@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Socket接收数据 #
+# Socket接收数据
 # 作者：稽术宅（funnygeeker）
 # QGMA项目交流QQ群：332568832
 # 作者Bilibili：https://b23.tv/b39RG2r
