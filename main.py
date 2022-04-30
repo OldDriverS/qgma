@@ -11,7 +11,7 @@ import os
 import sys
 os.chdir(sys.path[0])  # 改变程序当前工作路径
 
-from core.log import *
+from core.log_mgt import *
 Handle_Log.Log_Conf()
 logger.debug('1')
 import test
