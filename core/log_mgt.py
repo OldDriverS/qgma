@@ -24,7 +24,7 @@ if not os.path.exists(log_path):
 
 class Log_Mgt:
     '日志管理模块：首次运行时使用‘Log_Conf’函数初始化后，使用已实例化的‘logger’对象记录日志'
-    def Log_Conf(log_file_name='QGMA.log', file_log_level=10, console_log_level=20, max_bytes=4*1024*1024, backup_count=3):
+    def Log_Conf(log_file_name='QGMA.log', file_log_level=10, console_log_level=20, max_bytes=2*1024*1024, backup_count=3):
         '日志设置：日志文件名，文件日志等级(NOTICE=0,DEBUG=10,INFO=20,WARNING=30,ERROR=40,CRITICAL=50)，控制台日志等级，最大单个日志大小，日志拆分次数（不能为0，1为2份，2为3份，以此类推）'
         
         # 检查日志文件名是否合法
