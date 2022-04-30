@@ -13,20 +13,22 @@
 import os
 import logging
 import colorlog
-import traceback # 需安装，用于捕获错误
+import traceback  # 需安装，用于捕获错误
 from logging.handlers import RotatingFileHandler
 
 # 检查日志存放目录是否存在，不存在则创建
 cur_path = os.path.dirname(os.path.realpath(__file__))  # 当前项目路径
-log_path = os.path.join(os.path.dirname(cur_path),'logs')  # log_path为存放日志的路径，'logs'为创建的文件夹名
+# log_path为存放日志的路径，'logs'为创建的文件夹名
+log_path = os.path.join(os.path.dirname(cur_path), 'logs')
 if not os.path.exists(log_path):
     os.mkdir(log_path)  # 若不存在logs文件夹，则自动创建
+
 
 class Log_Mgt:
     '日志管理模块：首次运行时使用‘Log_Conf’函数初始化后，使用已实例化的‘logger’对象记录日志'
     def Log_Conf(log_file_name='QGMA.log', file_log_level=10, console_log_level=20, max_bytes=2*1024*1024, backup_count=3):
         '日志设置：日志文件名，文件日志等级(NOTICE=0,DEBUG=10,INFO=20,WARNING=30,ERROR=40,CRITICAL=50)，控制台日志等级，最大单个日志大小，日志拆分次数（不能为0，1为2份，2为3份，以此类推）'
-        
+
         # 检查日志文件名是否合法
         log_file_name = str(log_file_name)
         for i in ['\\', '/', ':', '*', '\"', '<', '>', '|']:
@@ -35,7 +37,7 @@ class Log_Mgt:
             if log_file_name == i:  # 避免文件名不合法
                 log_file_name = 'QGMA.log'
                 break
-        
+
         # 使logger可以在导入本(日志)模块后可直接调用
         global logger
         logger = logging.getLogger()
@@ -53,10 +55,10 @@ class Log_Mgt:
         # 输出到控制台
         console_handler = logging.StreamHandler()
         # 输出到文件
-        if backup_count == 0: # 强制分割日志文件，防止日志文件大小无限增加
+        if backup_count == 0:  # 强制分割日志文件，防止日志文件大小无限增加
             backup_count = 1
         file_handler = RotatingFileHandler(filename=(
-            log_path+'/'+log_file_name), mode='a', maxBytes=max_bytes, backupCount=backup_count, encoding='utf8')    
+            log_path+'/'+log_file_name), mode='a', maxBytes=max_bytes, backupCount=backup_count, encoding='utf8')
 
         # 日志输出格式
         # 日志文件输出格式
@@ -84,12 +86,11 @@ class Log_Mgt:
         console_handler.close()
         file_handler.close()
 
-
         # 日志级别，logger 和 handler以最高级别为准，不同handler之间可以不一样，不相互影响
         # root日志等级
         logger.setLevel(logging.NOTSET)
         # 控制台日志等级
-        for i in [0,10,20,30,40,50]:  # 逐一匹配列表
+        for i in [0, 10, 20, 30, 40, 50]:  # 逐一匹配列表
             if i == console_log_level:  # 如果设置的日志等级符合规范
                 console_handler.setLevel(console_log_level)
                 break
@@ -97,7 +98,7 @@ class Log_Mgt:
             console_handler.setLevel(logging.DEBUG)
             logger.error('【日志等级-控制台】设置不正确，将默认使用DEBUG等级！')
         # 文件日志等级
-        for i in [0,10,20,30,40,50]:  # 逐一匹配列表
+        for i in [0, 10, 20, 30, 40, 50]:  # 逐一匹配列表
             if i == file_log_level:  # 如果设置的日志等级符合规范
                 file_handler.setLevel(file_log_level)
                 break
