@@ -5,6 +5,7 @@
 # https://blog.csdn.net/qq_36072270/article/details/105345562
 
 #import builtins
+from asyncio.log import logger
 import os,sys
 import traceback
 import logging #
@@ -23,7 +24,7 @@ class Logger(logging.Logger):
     file_log_level = 'DEBUG' # 文件日志等级
     file_encoding = 'utf-8' # 日志文件编码
     file_max_bytes = 4*1024*1024-1 # 日志文件最大大小
-    file_backup_count = 0 # 日志文件拆分次数（0代表1份，1代表两份，以此类推）
+    file_backup_count = 1 # 日志文件拆分次数（0代表1份，1代表两份，以此类推）
     log_file_name = 'QGMA.log' # 日志文件名
 
     # 终端输出日志颜色配置 #
@@ -71,19 +72,19 @@ class Logger(logging.Logger):
         self.console_handler.close()
         self.file_handler.close()
 
-    def Debug(self, msg):
+    def debug(self, msg):
         return self.logger.debug(msg)
 
-    def Info(self, msg):
+    def info(self, msg):
         return self.logger.info(msg)
 
-    def Warning(self, msg):
+    def warning(self, msg):
         return self.logger.warning(msg)
 
-    def Error(self, msg):
+    def error(self, msg):
         return self.logger.error(msg)
 
-    def Critical(self, msg):
+    def critical(self, msg):
         return self.logger.critical(msg)
         
     
@@ -99,6 +100,7 @@ class Logger(logging.Logger):
             logging.critical(traceback.format_exc())
             quit()
 
+logger=Logger()
 '''
 # 日志文件名处理 #
 log_file_name = str(Logger.log_file_name) # 删除文件名中的不支持符号
@@ -165,8 +167,16 @@ python中时间日期格式化符号：
 '''
 if __name__ == '__main__': # 代码测试
     Logger.file_max_bytes = 1024
-    print(Logger.file_max_bytes)
-    for i in range(99999):
-        Logger().Debug('debug')
-        Logger().Info('info')
-        Logger().Warning('warn')
+    for i in range(50):
+        logger.debug('debug')
+        logger.info('info')
+        logger.warning('warning')
+        logger.error('error')
+        logger.critical('critical')
+    Logger.console_log_level = 'ERROR'
+    for i in range(50):
+        logger.debug('debug')
+        logger.info('info')
+        logger.warning('warning')
+        logger.error('error')
+        logger.critical('critical')
