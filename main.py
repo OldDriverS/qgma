@@ -32,10 +32,11 @@ rev = None  # 初始化原始消息内容
 
 # 将24xx的时间转化为00xx
 try:
-    if int(curfew_time[0][:2]) == 24:
-        curfew_time[0] = curfew_time[0][-2:]
-    if int(curfew_time[1][:2]) == 24:
-        curfew_time[1] = curfew_time[1][-2:]
+    if len(curfew_time)==2:
+        if int(curfew_time[0][:2]) == 24:
+            curfew_time[0] = curfew_time[0][-2:]
+        if int(curfew_time[1][:2]) == 24:
+            curfew_time[1] = curfew_time[1][-2:]
 except:
     logger.critical(Log_Mgt.Get_Error())
     quit()
@@ -132,6 +133,7 @@ def Message_Processing():  # 消息处理
 
             # 消息处理
             if rev["post_type"] == "message":  # 如果接收到的内容为消息，开始判断消息类型
+                rev['message']=rev['message'].lower()# 消息中的英文文本转小写
 
                 if rev["message_type"] == "group" and rev["sub_type"] == "normal":  # 如果为群聊消息，且为正常消息
                     bad_record = 0  # 默认消息不含脏话
