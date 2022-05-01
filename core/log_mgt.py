@@ -162,8 +162,8 @@ python中时间日期格式化符号：
 
 if __name__ == '__main__':  # 代码测试
     Log_Mgt.Log_Conf()
-    '''
-    for i in range(5):
+    
+    '''for i in range(5):
         logger.debug('debug')
         logger.info('info')
         logger.warning('warning')
