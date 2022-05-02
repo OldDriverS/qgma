@@ -24,31 +24,22 @@ class Text_Mgt():
                 return result['encoding'].lower()
             else:
                 return 'utf-8'  # 无法识别则默认为"utf-8"编码
-
-    def List_Read_Text(file_path: str, choose: str = '', choose_mode: int = 0, read_mode: int = 0, encoding: str = ''):
-        '读取文本文件并以列表的形式输出，可选排除(0)或选择(1)某字符串开头的行，可选从行头选择(0)还是从行尾选择(1)，不支持匹配换行符 返回：list'
-        if encoding == '':  # 如果没有文本编码参数，则自动识别编码
+    def List_Read_Text(file_path:str, choose:str = '', choose_mode:bool = False, read_mode:bool = False, encoding:str = ''):
+        """读取文本文件并以列表的形式输出，可选排除(0)或选择(1)某字符串开头的行，可选从行头选择(0)还是从行尾选择(1)，不支持匹配换行符 返回：list"""
+        if choose == '\n': choose = ''
+        if not encoding:  # 如果没有文本编码参数，则自动识别编码
             encoding = Text_Mgt.Encodeing_Detect(file_path)
-        with open(file_path, "r", encoding=encoding) as all_text:
-            if choose == '':  # 如果不需要排除或选择某字符串开头的文本行
-                text_list = [text.strip("\n")
-                             for text in all_text if text.strip("\n") != ""]
-            else:  # 如果需要排除或选择某字符串开头的文本行
-                if choose_mode == 1:  # 选择模式
-                    if read_mode == 1:  # 选择模式，从后选取
-                        text_list = [text.strip("\n") for text in all_text if text.strip(
-                            "\n") != "" and text.strip("\n")[-len(choose):] == str(choose)]
-                    else:  # 选择模式，从前选取
-                        text_list = [text.strip("\n") for text in all_text if text.strip(
-                            "\n") != "" and text.strip("\n")[0:len(choose)] == str(choose)]
-                else:  # 排除模式
-                    if read_mode == 1:  # 排除模式，从后选取
-                        text_list = [text.strip("\n") for text in all_text if text.strip(
-                            "\n") != "" and text.strip("\n")[-len(choose):] != str(choose)]
-                    else:  # 排除模式，从前选取
-                        text_list = [text.strip("\n") for text in all_text if text.strip(
-                            "\n") != "" and text.strip("\n")[0:len(choose)] != str(choose)]
-        return text_list
+        def inner():
+            with open(file_path, "r", encoding=encoding) as fd:  # 读取文本文件
+                for line in fd:
+                    line = line.strip() # 去除\n
+                    if not line: continue #过滤空行
+                    if not choose: #无筛选内容，禁用筛选
+                        yield line
+                    #切割出选取的内容
+                    select_data = line[-len(choose):] if read_mode  else  line[0:len(choose)]
+                    if not choose_mode ^ (select_data == choose): yield line
+        return list(inner())
 
     @staticmethod
     def Match_List(list: list, text: str):
