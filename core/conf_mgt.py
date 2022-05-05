@@ -9,7 +9,7 @@
 # chardet文本编码检测：https://blog.csdn.net/tianzhu123/article/details/8187470
 
 from configobj import ConfigObj
-from text_mgt import *
+from .text_mgt import *
 
 
 class Conf_Mgt:
