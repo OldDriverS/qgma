@@ -78,11 +78,9 @@ class EventNode:
 
     def __call__(self, kw):
         """节点可以被调用"""
-        if not self._callback:
-            return None
-        if not self.mask:
+        if self._callback and not self.mask:
             # 屏蔽后不可触发
-            return self._callback(self, kw)
+            self._callback(self, kw)
 
     def call(self, kw):
         """寻找一个匹配度较高的子节点并执行"""
