@@ -293,9 +293,9 @@ def handler(event, kw): pass
 event 是被触发的事件节点
 kw 是一个字典，它是cqhttp返回的完整内容
 
-这里将handler
+这里定义handler
 
-def handler(event, **kw):
+def handler(event, kw):
     root.logger.info(f"私聊：{kw['sender']['nickname']} 和你说了 {kw['message']}")
     root.cqhttp.post("send_private_msg",**{
         "user_id":kw["user_id"],
